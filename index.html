@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07111f">
+<title>RJ GAME INDIA</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#050a12;
+  color:white;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+button{
+  border:0;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+.app{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 0%,#173b62 0,#07111f 38%,#03060b 100%);
+}
+header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  border-bottom:1px solid #26364a;
+  background:#07101cdd;
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(12px);
+}
+.logo{
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+.logo span{color:#35a7ff}
+.coins{
+  background:#14263b;
+  padding:9px 13px;
+  border-radius:20px;
+  font-size:13px;
+}
+.screen{display:none;padding:20px 16px 100px}
+.screen.active{display:block}
+.hero{
+  margin-top:15px;
+  min-height:230px;
+  border-radius:24px;
+  padding:28px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:end;
+  background:
+    linear-gradient(0deg,#03070dcc,transparent),
+    radial-gradient(circle at 70% 30%,#247dc8,#102a45 42%,#07101b);
+  border:1px solid #31506d;
+  box-shadow:0 15px 45px #0008;
+}
+.hero h1{font-size:38px;font-weight:900}
+.hero p{color:#a9bdd2;margin-top:7px}
+.primary{
+  background:linear-gradient(135deg,#168cff,#005bd1);
+  padding:15px 22px;
+  border-radius:14px;
+  margin-top:18px;
+  font-size:16px;
+  box-shadow:0 8px 25px #0075ff55;
+}
+.section-title{
+  font-size:19px;
+  margin:25px 0 13px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.card{
+  background:#0d1826;
+  border:1px solid #25394e;
+  border-radius:17px;
+  padding:18px 14px;
+  min-height:105px;
+}
+.card b{font-size:16px}
+.card p{
+  color:#91a5ba;
+  font-size:12px;
+  margin-top:7px;
+}
+.icon{font-size:28px;margin-bottom:9px}
+.menu-btn{
+  width:100%;
+  background:#101e2e;
+  border:1px solid #2a4057;
+  padding:15px;
+  border-radius:13px;
+  text-align:left;
+  margin-bottom:10px;
+}
+.back{
+  background:#162536;
+  padding:10px 15px;
+  border-radius:12px;
+  margin-bottom:15px;
+}
+.title{
+  font-size:28px;
+  font-weight:900;
+  margin:8px 0 20px;
+}
+.option{
+  background:#0d1826;
+  border:1px solid #263c52;
+  padding:17px;
+  border-radius:14px;
+  margin:10px 0;
+}
+.option.selected{
+  border-color:#1592ff;
+  background:#102b45;
+}
+.player{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  background:#0d1826;
+  border:1px solid #293e53;
+  border-radius:16px;
+  padding:12px;
+  margin:10px 0;
+}
+.avatar{
+  width:55px;height:55px;border-radius:50%;
+  background:linear-gradient(135deg,#168cff,#6c2cff);
+  display:grid;place-items:center;
+  font-size:23px;font-weight:900;
+}
+.player small{color:#8ea5ba}
+.badge{
+  margin-left:auto;
+  background:#183f64;
+  padding:6px 9px;
+  border-radius:8px;
+  font-size:11px;
+}
+.game{
+  min-height:calc(100vh - 70px);
+  background:
+    linear-gradient(#0002,#0009),
+    radial-gradient(ellipse at 50% 30%,#20743f,#123b28 45%,#07100b);
+  position:relative;
+  padding:15px;
+}
+.score{
+  background:#07101ddd;
+  border:1px solid #405367;
+  border-radius:15px;
+  padding:13px;
+  text-align:center;
+}
+.score strong{font-size:25px}
+.pitch{
+  height:300px;
+  width:150px;
+  margin:25px auto;
+  background:#c89d64;
+  border:4px solid #9e784c;
+  border-radius:7px;
+  position:relative;
+}
+.stumps{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:30px;
+}
+.stumps.top{top:15px}.stumps.bottom{bottom:15px}
+.joystick{
+  width:105px;height:105px;
+  border:2px solid #ffffff55;
+  background:#ffffff15;
+  border-radius:50%;
+  position:fixed;
+  bottom:30px;left:20px;
+  display:grid;place-items:center;
+}
+.joystick div{
+  width:48px;height:48px;
+  background:#ffffff33;
+  border-radius:50%;
+}
+.shots{
+  position:fixed;
+  bottom:20px;right:15px;
+  display:grid;
+  grid-template-columns:70px 70px;
+  gap:9px;
+}
+.shots button{
+  height:55px;
+  border-radius:50%;
+  background:#ffffff18;
+  border:1px solid #ffffff44;
+}
+.bottom{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:65px;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  background:#07101df2;
+  border-top:1px solid #26384c;
+  z-index:20;
+}
+.bottom button{
+  background:none;
+  color:#8499ad;
+  font-size:11px;
+}
+.bottom button.active{color:#3ca7ff}
+.toast{
+  position:fixed;
+  top:80px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#168cff;
+  padding:12px 18px;
+  border-radius:12px;
+  display:none;
+  z-index:50;
+}
+.login{
+  max-width:450px;
+  margin:40px auto;
+  background:#0c1725;
+  border:1px solid #2b4158;
+  border-radius:22px;
+  padding:25px;
+}
+input{
+  width:100%;
+  background:#07101b;
+  color:white;
+  border:1px solid #30475e;
+  padding:15px;
+  border-radius:12px;
+  margin:7px 0;
+}
+@media(min-width:700px){
+  .screen{max-width:900px;margin:auto}
+  .grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">RJ <span>GAME INDIA</span></div>
+  <div class="coins">🪙 <span id="coins">1000</span></div>
+</header>
+
+<div id="toast" class="toast"></div>
+
+<!-- HOME -->
+<section id="home" class="screen active">
+  <div class="hero">
+    <h1>RJ GAME INDIA</h1>
+    <p>Next generation cricket experience</p>
+    <button class="primary" onclick="show('match')">🏏 PLAY NOW</button>
+  </div>
+
+  <div class="section-title">Game Modes</div>
+  <div class="grid">
+    <div class="card" onclick="show('match')"><div class="icon">⚡</div><b>Quick Match</b><p>Fast cricket match</p></div>
+    <div class="card" onclick="show('tournament')"><div class="icon">🏆</div><b>Tournaments</b><p>World cricket</p></div>
+    <div class="card" onclick="show('career')"><div class="icon">⭐</div><b>Career Mode</b><p>Build your career</p></div>
+    <div class="card" onclick="show('cards')"><div class="icon">🃏</div><b>Player Cards</b><p>Collect players</p></div>
+  </div>
+
+  <div class="section-title">More</div>
+  <button class="menu-btn" onclick="show('teams')">🇮🇳 Teams & Squads</button>
+  <button class="menu-btn" onclick="show('stadium')">🏟️ Stadium Selection</button>
+  <button class="menu-btn" onclick="show('login')">🔐 Registration / Login</button>
+  <button class="menu-btn" onclick="show('settings')">⚙️ Settings</button>
+</section>
+
+<!-- MATCH -->
+<section id="match" class="screen">
+  <button class="back" onclick="show('home')">← Back</button>
+  <div class="title">Quick Match</div>
+
+  <div class="section-title">Select Teams</div>
+  <div class="option selected" onclick="select(this)">🇮🇳 INDIA</div>
+  <div class="option" onclick="select(this)">🇦🇺 AUSTRALIA</div>
+  <div class="option" onclick="select(this)">🏴 ENGLAND</div>
+  <div class="option" onclick="select(this)">🇿🇦 SOUTH AFRICA</div>
+
+  <div class="section-title">Match Format</div>
+  <div class="option selected" onclick="select(this)">T20 • 20 Overs</div>
+  <div class="option" onclick="select(this)">ODI • 50 Overs</div>
+  <div class="option" onclick="select(this)">TEST • 5 Days</div>
+
+  <button class="primary" onclick="show('stadium')">CONTINUE →</button>
+</section>
+
+<!-- STADIUM -->
+<section id="stadium" class="screen">
+  <button class="back" onclick="show('home')">← Back</button>
+  <div class="title">Select Stadium</div>
+
+  <div class="option selected" onclick="select(this)">🏟️ Mumbai Cricket Stadium</div>
+  <div class="option" onclick="select(this)">🏟️ Ahmedabad Cricket Stadium</div>
+  <div class="option" onclick="select(this)">🏟️ Kolkata Cricket Stadium</div>
+  <div class="option" onclick="select(this)">🏟️ Delhi Cricket Stadium</div>
+  <div class="option" onclick="select(this)">🏟️ Chennai Cricket Stadium</div>
+
+  <button class="primary" onclick="startGame()">🏏 START MATCH</button>
+</section>
+
+<!-- GAME -->
+<section id="game" class="screen" style="padding:0">
+  <div class="game">
+    <div class="score">
+      INDIA &nbsp; <strong id="runs">0/0</strong> &nbsp; (0.0)
+      <br><small>Target: 181</small>
+    </div>
+
+    <div class="pitch">
+      <div class="stumps top">|||</div>
+      <div class="stumps bottom">|||</div>
+    </div>
+
+    <div class="joystick"><div></div></div>
+
+    <div class="shots">
+      <button onclick="shot('COVER DRIVE')">↗<br>Drive</button>
+      <button onclick="shot('PULL SHOT')">↘<br>Pull</button>
+      <button onclick="shot('CUT SHOT')">↖<br>Cut</button>
+      <button onclick="shot('LOFT')">⬆<br>Loft</button>
+    </div>
+  </div>
+</section>
+
+<!-- TOURNAMENT -->
+<section id="tournament" class="screen">
+  <button class="back" onclick="show('home')">← Back</button>
+  <div class="title">🏆 Tournaments</div>
+  <div class="card"><div class="icon">🌍</div><b>T20 World Cup</b><p>International T20 tournament</p></div><br>
+  <div class="card"><div class="icon">🏆</div><b>ODI World Cup</b><p>50-over world championship</p></div><br>
+  <div class="card"><div class="icon">🔥</div><b>Champions Tournament</b><p>Elite international cricket</p></div><br>
+  <div class="card"><div class="icon">💙</div><b>Franchise League</b><p>Build your own franchise</p></div>
+</section>
+
+<!-- CAREER -->
+<section id="career" class="screen">
+  <button class="back" onclick="show('home')">← Back</button>
+  <div class="title">⭐ Career Mode</div>
+  <div class="hero" style="min-height:180px">
+    <h1>LEVEL 1</h1>
+    <p>Rookie Cricketer</p>
+    <button class="primary" onclick="toast('Career started!')">START CAREER</button>
+  </div>
+  <div class="section-title">Progress</div>
+  <div class="card"><b>Batting</b><p>Overall Rating: 72</p></div><br>
+  <div class="card"><b>Bowling</b><p>Overall Rating: 68</p></div>
+</section>
+
+<!-- CARDS -->
+<section id="cards" class="screen">
+  <button class="back" onclick="show('home')">← Back</button>
+  <div class="title">🃏 Player Cards</div>
+
+  <div class="player">
+    <div class="avatar">RS</div>
+    <div><b>Special Card</b><br><small>Premium Player • Rating 99</small></div>
+    <span class="badge">LEGEND</span>
+  </div>
+
+  <div class="player">
+    <div class="avatar">VK</div>
+    <div><b>Special Card</b><br><small>Premium Player • Rating 99</small></div>
+    <span class="badge">LEGEND</span>
+  </div>
+
+  <div class="player">
+    <div class="avatar">JB</div>
+    <div><b>Fast Bowler</b><br><small>Rating 94</small></div>
+    <span class="badge">EPIC</span>
+  </div>
+
+  <button class="primary" onclick="toast('New card unlocked!')">OPEN CARD PACK</button>
+</section>
+
+<!-- TEAMS -->
+<section id="teams" class="screen">
+  <button class="back" onclick="show('home')">← Back</button>
+  <div class="title">🇮🇳 Teams & Squads</div>
+  <div class="option selected">🇮🇳 India</div>
+  <div class="option">🇦🇺 Australia</div>
+  <div class="option">🏴 England</div>
+  <div class="option">🇿🇦 South Africa</div>
+  <div class="option">🇳🇿 New Zealand</div>
+  <div class="option">🇱🇰 Sri Lanka</div>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="screen">
+  <div class="login">
+    <div class="title">🔐 RJ GAME INDIA</div>
+    <p style="color:#9db0c2;margin-bottom:15px">Register to continue</p>
+    <input id="name" placeholder="Player name">
+    <input id="email" placeholder="Email">
+    <input id="pass" type="password" placeholder="Password">
+    <button class="primary" style="width:100%" onclick="register()">REGISTER</button>
+    <button class="menu-btn" style="margin-top:12px;text-align:center" onclick="toast('Google registration coming soon')">G CONTINUE WITH GOOGLE</button>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="screen">
+  <button class="back" onclick="show('home')">← Back</button>
+  <div class="title">⚙️ Settings</div>
+  <div class="option">🎮 Controls &nbsp; Pro Joystick</div>
+  <div class="option">📺 Camera &nbsp; Broadcast</div>
+  <div class="option">🔊 Commentary &nbsp; ON</div>
+  <div class="option">🌦️ Dynamic Weather &nbsp; ON</div>
+  <div class="option">🎵 Sound &nbsp; ON</div>
+</section>
+
+<div class="bottom">
+  <button class="active" onclick="show('home')">🏠<br>Home</button>
+  <button onclick="show('match')">🏏<br>Play</button>
+  <button onclick="show('tournament')">🏆<br>Trophy</button>
+  <button onclick="show('cards')">🃏<br>Cards</button>
+</div>
+
+</div>
+
+<script>
+let runs=0;
+let wickets=0;
+let balls=0;
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function select(el){
+  el.parentElement.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toast(text){
+  const t=document.getElementById('toast');
+  t.innerText=text;
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',1800);
+}
+
+function startGame(){
+  runs=0;
+  wickets=0;
+  balls=0;
+  document.getElementById('runs').innerText='0/0';
+  show('game');
+  toast('Match started!');
+}
+
+function shot(name){
+  const outcomes=[0,1,2,3,4,6];
+  const value=outcomes[Math.floor(Math.random()*outcomes.length)];
+  balls++;
+
+  if(Math.random()<0.06){
+    wickets++;
+    toast('OUT! '+name);
+  }else{
+    runs+=value;
+    toast(value===0 ? 'Dot Ball' : name+' • '+value+' RUN');
+  }
+
+  document.getElementById('runs').innerText=runs+'/'+wickets;
+}
+
+function register(){
+  const name=document.getElementById('name').value;
+  const email=document.getElementById('email').value;
+
+  if(!name || !email){
+    toast('Name aur Email bharo');
+    return;
+  }
+
+  localStorage.setItem('rj_name',name);
+  localStorage.setItem('rj_email',email);
+  toast('Registration successful!');
+  setTimeout(()=>show('home'),1200);
+}
+
+window.addEventListener('load',()=>{
+  const n=localStorage.getItem('rj_name');
+  if(n) toast('Welcome back, '+n+'!');
+});
+</script>
+
+</body>
+  </html>
