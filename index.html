@@ -8,7 +8,13 @@
 <title>RJ GAME INDIA</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js");
+  });
+}
+</script>*{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:Arial,Helvetica,sans-serif;
   background:#050a12;
