@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#05070c">
+
+<title>RJ Game India — Version 1.1.0</title>
+
+<link rel="manifest" href="./manifest.webmanifest">
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#05070c;
+  color:white;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button{
+  color:white;
+  border:0;
+  font:inherit;
+  cursor:pointer;
+}
+
+.screen{
+  width:100%;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  background:#05070c;
+}
+
+/* ================= LOADING ================= */
+
+#loadingScreen{
+  position:absolute;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:#05070c;
+}
+
+.loading-image{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.loading-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.15),
+      rgba(0,0,0,.35) 45%,
+      rgba(0,0,0,.9)
+    );
+}
+
+.loading-content{
+  position:relative;
+  z-index:2;
+  width:92%;
+  max-width:900px;
+  text-align:center;
+  margin-top:30vh;
+}
+
+.logo{
+  font-size:clamp(32px,8vw,72px);
+  font-weight:900;
+  letter-spacing:3px;
+  text-shadow:0 5px 25px #000;
+}
+
+.logo-sub{
+  display:block;
+  margin-top:5px;
+  font-size:clamp(11px,2.5vw,18px);
+  letter-spacing:6px;
+}
+
+.loading-title{
+  margin-top:22px;
+  font-size:clamp(16px,4vw,27px);
+  font-weight:900;
+}
+
+.percent{
+  margin-top:8px;
+  font-weight:bold;
+}
+
+.loading-bar{
+  width:min(600px,90%);
+  height:9px;
+  margin:12px auto;
+  border-radius:20px;
+  background:rgba(255,255,255,.2);
+  overflow:hidden;
+}
+
+.progress{
+  width:0%;
+  height:100%;
+  background:white;
+  box-shadow:0 0 20px white;
+}
+
+.loading-features{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:7px;
+  margin-top:16px;
+}
+
+.loading-features span{
+  padding:7px 10px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:20px;
+  background:rgba(0,0,0,.4);
+  font-size:10px;
+}
+
+#tapStart{
+  display:none;
+  margin:20px auto 0;
+  padding:13px 32px;
+  border-radius:30px;
+  background:white;
+  color:#05070c;
+  font-weight:900;
+}
+
+/* ================= HOME ================= */
+
+#home{
+  position:absolute;
+  inset:0;
+  display:none;
+  overflow:auto;
+  background:
+    radial-gradient(circle at top,#24324d,#090d16 50%,#020305);
+}
+
+.home-header{
+  text-align:center;
+  padding:30px 15px 15px;
+}
+
+.home-title{
+  font-size:clamp(30px,8vw,60px);
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.home-version{
+  opacity:.6;
+  margin-top:6px;
+  font-size:12px;
+}
+
+.menu{
+  width:min(650px,92%);
+  margin:20px auto 50px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+
+.menu button{
+  min-height:70px;
+  border-radius:15px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  font-weight:900;
+}
+
+.menu button:active{
+  transform:scale(.97);
+}
+
+.menu .primary{
+  grid-column:1/-1;
+  min-height:85px;
+  font-size:18px;
+  background:rgba(255,255,255,.18);
+}
+
+/* ================= PANELS ================= */
+
+.panel{
+  position:absolute;
+  inset:0;
+  z-index:50;
+  display:none;
+  overflow:auto;
+  padding:20px;
+  background:
+    radial-gradient(circle at top,#19253a,#05070c 65%);
+}
+
+.panel-inner{
+  width:min(900px,100%);
+  margin:auto;
+}
+
+.back{
+  padding:9px 16px;
+  margin-bottom:18px;
+  border-radius:20px;
+  background:rgba(255,255,255,.12);
+}
+
+.panel-title{
+  font-size:28px;
+  font-weight:900;
+  margin-bottom:20px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.card{
+  padding:15px;
+  border-radius:15px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.card strong{
+  display:block;
+  font-size:17px;
+  margin-bottom:5px;
+}
+
+.card small{
+  opacity:.65;
+}
+
+.select-btn{
+  width:100%;
+  padding:9px;
+  margin-top:10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.15);
+  font-weight:bold;
+}
+
+/* ================= PLAYERS ================= */
+
+.xi{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.player-card{
+  min-height:90px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.player-card img,
+.avatar{
+  width:55px;
+  height:55px;
+  flex:none;
+  border-radius:50%;
+}
+
+.player-card img{
+  object-fit:cover;
+}
+
+.avatar{
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      #d49a72 0 25%,
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      #273d67 0 42%,
+      transparent 43%
+    ),
+    #18202c;
+}
+
+.player-info{
+  min-width:0;
+}
+
+.player-info strong{
+  display:block;
+}
+
+.player-info small{
+  display:block;
+  opacity:.6;
+  margin-top:4px;
+}
+
+.rating{
+  margin-left:auto;
+  font-size:18px;
+  font-weight:900;
+}
+
+/* ================= GAME ================= */
+
+#game{
+  position:absolute;
+  inset:0;
+  display:none;
+  background:#000;
+}
+
+#gameCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+#tracer{
+  position:absolute;
+  inset:0;
+  z-index:9;
+  pointer-events:none;
+}
+
+.hud{
+  position:absolute;
+  z-index:12;
+  top:10px;
+  left:10px;
+  right:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:7px;
+}
+
+.hud-box{
+  padding:8px 10px;
+  border-radius:10px;
+  background:rgba(0,0,0,.65);
+  border:1px solid rgba(255,255,255,.18);
+  font-size:11px;
+  font-weight:900;
+}
+
+#commentary{
+  position:absolute;
+  z-index:12;
+  top:62px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(700px,88%);
+  padding:9px 13px;
+  text-align:center;
+  border-radius:20px;
+  background:rgba(0,0,0,.6);
+  font-size:12px;
+  font-weight:bold;
+}
+
+.exit-game{
+  position:absolute;
+  z-index:15;
+  top:103px;
+  right:10px;
+  padding:7px 11px;
+  border-radius:18px;
+  background:rgba(0,0,0,.65);
+  font-size:10px;
+}
+
+.controls{
+  position:absolute;
+  z-index:14;
+  left:8px;
+  right:8px;
+  bottom:10px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.control{
+  min-width:68px;
+  padding:11px 10px;
+  border-radius:12px;
+  background:rgba(0,0,0,.72);
+  border:1px solid rgba(255,255,255,.22);
+  font-size:10px;
+  font-weight:900;
+}
+
+.control:active{
+  transform:scale(.94);
+}
+
+/* ================= AUCTION / CAREER ================= */
+
+.auction-box,
+.career-box{
+  padding:20px;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.auction-price{
+  margin:12px 0;
+  font-size:30px;
+  font-weight:900;
+}
+
+.action-button{
+  width:100%;
+  padding:13px;
+  margin-top:9px;
+  border-radius:11px;
+  background:rgba(255,255,255,.14);
+  font-weight:900;
+}
+
+@media(max-width:520px){
+  .cards,
+  .xi{
+    grid-template-columns:1fr;
+  }
+
+  .menu{
+    grid-template-columns:1fr;
+  }
+
+  .menu .primary{
+    grid-column:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+
+<!-- =================================================
+     LOADING SCREEN
+================================================= -->
+
+<section id="loadingScreen">
+
+  <img
+    class="loading-image"
+    src="./virat-kohli.png"
+    alt="RJ Game India Loading Screen"
+  >
+
+  <div class="loading-overlay"></div>
+
+  <div class="loading-content">
+
+    <div class="logo">
+      RJ GAME INDIA
+      <span class="logo-sub">CRICKET • 3D • INDIA</span>
+    </div>
+
+    <div
+      class="loading-title"
+      id="loadingTitle">
+      LOADING RJ GAME INDIA...
+    </div>
+
+    <div
+      class="percent"
+      id="percent">
+      0%
+    </div>
+
+    <div class="loading-bar">
+      <div
+        class="progress"
+        id="progress">
+      </div>
+    </div>
+
+    <div class="loading-features">
+      <span>PLAYING XI</span>
+      <span>IPL AUCTION</span>
+      <span>CAREER MODE</span>
+      <span>4 STADIUMS</span>
+      <span>3D MATCH</span>
+      <span>REPLAY</span>
+      <span>WEATHER</span>
+      <span>MULTI CAMERA</span>
+    </div>
+
+    <button id="tapStart">
+      TAP TO START
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =================================================
+     HOME
+================================================= -->
+
+<section id="home">
+
+  <div class="home-header">
+
+    <div class="home-title">
+      RJ GAME INDIA
+    </div>
+
+    <div class="home-version">
+      VERSION 1.1.0 • 3D CRICKET
+    </div>
+
+  </div>
+
+  <div class="menu">
+
+    <button
+      class="primary"
+      onclick="startMatch()">
+      🏏 PLAY MATCH
+    </button>
+
+    <button
+      onclick="openPanel('stadiums')">
+      🏟️ STADIUMS
+    </button>
+
+    <button
+      onclick="openPanel('teamsPanel')">
+      🌍 TEAMS
+    </button>
+
+    <button
+      onclick="openPanel('xiPanel')">
+      👥 PLAYING XI
+    </button>
+
+    <button
+      onclick="openPanel('auctionPanel')">
+      💰 IPL AUCTION
+    </button>
+
+    <button
+      onclick="openPanel('careerPanel')">
+      ⭐ CAREER MODE
+    </button>
+
+    <button
+      onclick="startMatch('replay')">
+      🎥 REPLAY
+    </button>
+
+    <button
+      onclick="cycleWeather()">
+      ☁️ WEATHER
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =================================================
+     STADIUMS
+================================================= -->
+
+<section
+  class="panel"
+  id="stadiums">
+
+  <div class="panel-inner">
+
+    <button
+      class="back"
+      onclick="closePanels()">
+      ← BACK
+    </button>
+
+    <div class="panel-title">
+      🏟️ SELECT STADIUM
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <strong>Wankhede Stadium</strong>
+        <small>Mumbai, India</small>
+
+        <button
+          class="select-btn"
+          onclick="selectStadium('Wankhede Stadium')">
+          SELECT
+        </button>
+      </div>
+
+      <div class="card">
+        <strong>M. Chinnaswamy Stadium</strong>
+        <small>Bengaluru, India</small>
+
+        <button
+          class="select-btn"
+          onclick="selectStadium('M. Chinnaswamy Stadium')">
+          SELECT
+        </button>
+      </div>
+
+      <div class="card">
+        <strong>Arun Jaitley Stadium</strong>
+        <small>Delhi, India</small>
+
+        <button
+          class="select-btn"
+          onclick="selectStadium('Arun Jaitley Stadium')">
+          SELECT
+        </button>
+      </div>
+
+      <div class="card">
+        <strong>Perth Stadium</strong>
+        <small>Perth, Australia</small>
+
+        <button
+          class="select-btn"
+          onclick="selectStadium('Perth Stadium')">
+          SELECT
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =================================================
+     TEAMS
+================================================= -->
+
+<section
+  class="panel"
+  id="teamsPanel">
+
+  <div class="panel-inner">
+
+    <button
+      class="back"
+      onclick="closePanels()">
+      ← BACK
+    </button>
+
+    <div class="panel-title">
+      🌍 INTERNATIONAL TEAMS
+    </div>
+
+    <div
+      class="cards"
+      id="teamsList">
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =================================================
+     PLAYING XI
+================================================= -->
+
+<section
+  class="panel"
+  id="xiPanel">
+
+  <div class="panel-inner">
+
+    <button
+      class="back"
+      onclick="closePanels()">
+      ← BACK
+    </button>
+
+    <div class="panel-title">
+      🇮🇳 INDIA — PLAYING XI
+    </div>
+
+    <div
+      class="xi"
+      id="xiList">
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =================================================
+     IPL AUCTION
+================================================= -->
+
+<section
+  class="panel"
+  id="auctionPanel">
+
+  <div class="panel-inner">
+
+    <button
+      class="back"
+      onclick="closePanels()">
+      ← BACK
+    </button>
+
+    <div class="panel-title">
+      💰 IPL AUCTION
+    </div>
+
+    <div class="auction-box">
+
+      <strong id="auctionPlayer">
+        Ravindra Jadeja
+      </strong>
+
+      <div
+        class="auction-price"
+        id="auctionPrice">
+        ₹2.00 Cr
+      </div>
+
+      <div id="auctionStatus">
+        Base price
+      </div>
+
+      <button
+        class="action-button"
+        onclick="auctionBid()">
+        🔨 BID
+      </button>
+
+      <button
+        class="action-button"
+        onclick="auctionNext()">
+        NEXT PLAYER
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =================================================
+     CAREER MODE
+================================================= -->
+
+<section
+  class="panel"
+  id="careerPanel">
+
+  <div class="panel-inner">
+
+    <button
+      class="back"
+      onclick="closePanels()">
+      ← BACK
+    </button>
+
+    <div class="panel-title">
+      ⭐ CAREER MODE
+    </div>
+
+    <div class="career-box">
+
+      <strong>
+        RJ Cricket Career
+      </strong>
+
+      <p>
+        Matches:
+        <span id="careerMatches">0</span>
+      </p>
+
+      <p>
+        Runs:
+        <span id="careerRuns">0</span>
+      </p>
+
+      <p>
+        Wickets:
+        <span id="careerWickets">0</span>
+      </p>
+
+      <button
+        class="action-button"
+        onclick="startMatch()">
+        START CAREER MATCH
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =================================================
+     3D MATCH
+================================================= -->
+
+<section id="game">
+
+  <canvas id="gameCanvas"></canvas>
+
+  <canvas id="tracer"></canvas>
+
+  <div class="hud">
+
+    <div
+      class="hud-box"
+      id="scoreHud">
+      INDIA 0/0
+    </div>
+
+    <div
+      class="hud-box"
+      id="overHud">
+      0.0 OVERS
+    </div>
+
+    <div
+      class="hud-box"
+      id="stadiumHud">
+      WANKHEDE
+    </div>
+
+  </div>
+
+  <div id="commentary">
+    Welcome to RJ Game India
+  </div>
+
+  <button
+    class="exit-game"
+    onclick="exitGame()">
+    EXIT MATCH
+  </button>
+
+  <div class="controls">
+
+    <button
+      class="control"
+      onclick="bowlBall()">
+      BOWL
+    </button>
+
+    <button
+      class="control"
+      onclick="powerShot()">
+      POWER SHOT
+    </button>
+
+    <button
+      class="control"
+      onclick="normalShot()">
+      SHOT
+    </button>
+
+    <button
+      class="control"
+      onclick="defendShot()">
+      DEFEND
+    </button>
+
+    <button
+      class="control"
+      onclick="runBatsman()">
+      RUN
+    </button>
+
+    <button
+      class="control"
+      onclick="cameraMode()">
+      CAMERA
+    </button>
+
+    <button
+      class="control"
+      onclick="replayBall()">
+      REPLAY
+    </button>
+
+    <button
+      class="control"
+      onclick="cycleWeather()">
+      WEATHER
+    </button>
+
+  </div>
+
+</section>
+
+</div>
+
+
+<!-- =================================================
+     THREE.JS
+================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<script>
+
+/* =================================================
+   GAME STATE
+================================================= */
+
+const GAME_VERSION = "1.1.0";
+
+let selectedStadium = "Wankhede Stadium";
+let selectedTeam = "India";
+
+let score = 0;
+let wickets = 0;
+let balls = 0;
+
+let weather = "Clear";
+let cameraIndex = 0;
+
+let scene = null;
+let camera = null;
+let renderer = null;
+
+let ball = null;
+let batsman = null;
+let bowler = null;
+
+let ballMoving = false;
+let ballStartTime = 0;
+let ballType = "normal";
+
+const commentaryBox =
+  document.getElementById("commentary");
+
+
+/* =================================================
+   LOADING
+================================================= */
+
+let loadingNumber = 0;
+
+const progress =
+  document.getElementById("progress");
+
+const percent =
+  document.getElementById("percent");
+
+const loadingTitle =
+  document.getElementById("loadingTitle");
+
+const tapStart =
+  document.getElementById("tapStart");
+
+const loadingTimer =
+  setInterval(function(){
+
+    loadingNumber++;
+
+    progress.style.width =
+      loadingNumber + "%";
+
+    percent.textContent =
+      loadingNumber + "%";
+
+    if(loadingNumber >= 100){
+
+      clearInterval(loadingTimer);
+
+      loadingTitle.textContent =
+        "RJ GAME INDIA READY!";
+
+      tapStart.style.display =
+        "block";
+
+    }
+
+  },35);
+
+
+tapStart.onclick = function(){
+
+  document.getElementById(
+    "loadingScreen"
+  ).style.display = "none";
+
+  document.getElementById(
+    "home"
+  ).style.display = "block";
+
+};
+
+
+/* =================================================
+   PANELS
+================================================= */
+
+function openPanel(id){
+
+  document
+    .querySelectorAll(".panel")
+    .forEach(function(panel){
+      panel.style.display = "none";
+    });
+
+  document.getElementById(
+    "home"
+  ).style.display = "none";
+
+  document.getElementById(
+    id
+  ).style.display = "block";
+
+}
+
+function closePanels(){
+
+  document
+    .querySelectorAll(".panel")
+    .forEach(function(panel){
+      panel.style.display = "none";
+    });
+
+  document.getElementById(
+    "home"
+  ).style.display = "block";
+
+}
+
+
+/* =================================================
+   STADIUM
+================================================= */
+
+function selectStadium(name){
+
+  selectedStadium = name;
+
+  closePanels();
+
+}
+
+
+/* =================================================
+   INTERNATIONAL TEAMS
+================================================= */
+
+const internationalTeams = [
+  "India",
+  "Australia",
+  "England",
+  "South Africa",
+  "New Zealand",
+  "Pakistan",
+  "Sri Lanka",
+  "Bangladesh",
+  "Afghanistan",
+  "West Indies"
+];
+
+const teamsList =
+  document.getElementById("teamsList");
+
+internationalTeams.forEach(function(team){
+
+  const card =
+    document.createElement("div");
+
+  card.className = "card";
+
+  card.innerHTML =
+    "<strong>" +
+    team +
+    "</strong>" +
+
+    "<small>International Team</small>" +
+
+    "<button class='select-btn'>" +
+    "SELECT" +
+    "</button>";
+
+  card
+    .querySelector("button")
+    .onclick = function(){
+
+      selectedTeam = team;
+
+      closePanels();
+
+    };
+
+  teamsList.appendChild(card);
+
+});
+
+
+/* =================================================
+   INDIA PLAYING XI
+================================================= */
+
+const indiaXI = [
+
+  ["Rohit Sharma",
+   "Captain • Batter",
+   "98"],
+
+  ["Shubman Gill",
+   "Opening Batter",
+   "96"],
+
+  ["Virat Kohli",
+   "Top Order Batter",
+   "100"],
+
+  ["Suryakumar Yadav",
+   "Middle Order Batter",
+   "96"],
+
+  ["Rishabh Pant",
+   "Wicketkeeper Batter",
+   "94"],
+
+  ["Hardik Pandya",
+   "All Rounder",
+   "95"],
+
+  ["Ravindra Jadeja",
+   "All Rounder",
+   "96"],
+
+  ["Jasprit Bumrah",
+   "Fast Bowler",
+   "99"],
+
+  ["Kuldeep Yadav",
+   "Spin Bowler",
+   "92"],
+
+  ["Mohammed Siraj",
+   "Fast Bowler",
+   "91"],
+
+  ["Arshdeep Singh",
+   "Fast Bowler",
+   "90"]
+
+];
+
+const xiList =
+  document.getElementById("xiList");
+
+indiaXI.forEach(function(player){
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "player-card";
+
+  let imageHTML;
+
+  if(player[0] === "Virat Kohli"){
+
+    imageHTML =
+      "<img " +
+      "src='./virat-kohli.png' " +
+      "alt='Virat Kohli'>";
+
+  }else{
+
+    imageHTML =
+      "<div class='avatar'></div>";
+
+  }
+
+  card.innerHTML =
+    imageHTML +
+
+    "<div class='player-info'>" +
+    "<strong>" +
+    player[0] +
+    "</strong>" +
+    "<small>" +
+    player[1] +
+    "</small>" +
+    "</div>" +
+
+    "<div class='rating'>" +
+    player[2] +
+    "</div>";
+
+  xiList.appendChild(card);
+
+});
+
+
+/* =================================================
+   IPL AUCTION
+================================================= */
+
+const auctionPlayers = [
+
+  ["Ravindra Jadeja",2],
+  ["Virat Kohli",2],
+  ["Jasprit Bumrah",2],
+  ["Rohit Sharma",2],
+  ["Rishabh Pant",2],
+  ["Hardik Pandya",2]
+
+];
+
+let auctionIndex = 0;
+let auctionValue = 2;
+
+function updateAuction(){
+
+  const player =
+    auctionPlayers[auctionIndex];
+
+  document.getElementById(
+    "auctionPlayer"
+  ).textContent = player[0];
+
+  document.getElementById(
+  
