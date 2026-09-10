@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#05070b">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>RJ Game India</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #05070b;
+  font-family: Arial, sans-serif;
+}
+
+.screen {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 42%,
+      #263b50 0%,
+      #111d2a 35%,
+      #05070b 78%);
+  color: white;
+}
+
+/* Stadium lights */
+.screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 18%,
+      rgba(255,255,255,.28), transparent 10%),
+    radial-gradient(circle at 88% 18%,
+      rgba(255,255,255,.28), transparent 10%);
+  opacity: .8;
+}
+
+/* Ground */
+.ground {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -35%;
+  height: 65%;
+  border-radius: 50% 50% 0 0;
+  background:
+    radial-gradient(ellipse,
+      #315e32 0%,
+      #17351d 45%,
+      #08120b 75%);
+}
+
+/* Main content */
+.content {
+  position: relative;
+  z-index: 5;
+  width: 92%;
+  max-width: 1100px;
+  text-align: center;
+}
+
+.logo {
+  font-size: clamp(34px, 7vw, 76px);
+  font-weight: 900;
+  letter-spacing: 5px;
+  text-shadow: 0 4px 25px rgba(255,255,255,.25);
+}
+
+.tagline {
+  margin-top: 8px;
+  font-size: clamp(12px, 2.2vw, 22px);
+  letter-spacing: 6px;
+  opacity: .8;
+}
+
+/* Cricket players */
+.players {
+  height: clamp(170px, 34vh, 300px);
+  margin: 28px auto 10px;
+  position: relative;
+  max-width: 850px;
+}
+
+.player {
+  position: absolute;
+  bottom: 0;
+  width: 82px;
+  height: 155px;
+  border-radius: 42px 42px 18px 18px;
+  background: linear-gradient(
+    #d7d7d7 0 36%,
+    #1c3042 36% 100%
+  );
+  box-shadow: 0 12px 30px rgba(0,0,0,.55);
+}
+
+.player::before {
+  content: "";
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #a86f4c;
+  top: -25px;
+  left: 17px;
+}
+
+.player.left {
+  left: 12%;
+  transform: rotate(-7deg);
+}
+
+.player.center {
+  left: 50%;
+  transform: translateX(-50%) scale(1.12);
+}
+
+.player.right {
+  right: 12%;
+  transform: rotate(7deg);
+}
+
+/* Bat */
+.bat {
+  position: absolute;
+  width: 12px;
+  height: 105px;
+  background: #d6b06b;
+  border-radius: 8px;
+  transform: rotate(-35deg);
+  left: 22%;
+  bottom: 35px;
+}
+
+/* Ball */
+.ball {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #c92535;
+  left: 50%;
+  top: 25%;
+  box-shadow: 0 0 15px rgba(255,60,70,.8);
+  animation: ballMove 2s infinite ease-in-out;
+}
+
+@keyframes ballMove {
+  0%,100% {
+    transform: translate(-170px, 40px);
+  }
+  50% {
+    transform: translate(170px, -20px);
+  }
+}
+
+/* Loading */
+.loadingText {
+  font-size: clamp(14px, 2.5vw, 22px);
+  margin-top: 5px;
+  letter-spacing: 2px;
+}
+
+.bar {
+  width: min(78vw, 720px);
+  height: 11px;
+  margin: 12px auto 0;
+  border-radius: 20px;
+  background: rgba(255,255,255,.16);
+  overflow: hidden;
+}
+
+.progress {
+  width: 0%;
+  height: 100%;
+  border-radius: 20px;
+  background: white;
+  transition: width .15s linear;
+}
+
+.percent {
+  margin-top: 7px;
+  font-size: 14px;
+  opacity: .8;
+}
+
+/* Feature buttons */
+.features {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.feature {
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 18px;
+  padding: 7px 13px;
+  font-size: 11px;
+  background: rgba(0,0,0,.25);
+}
+
+.version {
+  margin-top: 14px;
+  font-size: 12px;
+  opacity: .6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+
+  <div class="ground"></div>
+
+  <div class="ball"></div>
+
+  <div class="content">
+
+    <div class="logo">RJ GAME INDIA</div>
+
+    <div class="tagline">
+      CRICKET • 3D • INDIA
+    </div>
+
+    <div class="players">
+      <div class="player left"></div>
+      <div class="player center"></div>
+      <div class="player right"></div>
+      <div class="bat"></div>
+    </div>
+
+    <div class="loadingText" id="loadingText">
+      LOADING RJ GAME INDIA...
+    </div>
+
+    <div class="bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="percent" id="percent">0%</div>
+
+    <div class="features">
+      <span class="feature">PLAYING XI</span>
+      <span class="feature">IPL AUCTION</span>
+      <span class="feature">CAREER MODE</span>
+      <span class="feature">REPLAY</span>
+      <span class="feature">MULTI CAMERA</span>
+      <span class="feature">WEATHER</span>
+    </div>
+
+    <div class="version">
+      Version 1.0.0 • Made for Cricket Fans ❤️
+    </div>
+
+  </div>
+</div>
+
+<script>
+let progress = 0;
+
+const bar = document.getElementById("progress");
+const percent = document.getElementById("percent");
+const text = document.getElementById("loadingText");
+
+const timer = setInterval(() => {
+
+  progress++;
+
+  bar.style.width = progress + "%";
+  percent.textContent = progress + "%";
+
+  if (progress >= 100) {
+
+    clearInterval(timer);
+
+    text.textContent = "RJ GAME INDIA READY!";
+
+    setTimeout(() => {
+      text.textContent = "TAP TO START";
+    }, 900);
+
+  }
+
+}, 45);
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js")
+    .catch(error => console.log(error));
+}
+</script>
+
+</body>
+  </html>
