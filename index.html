@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#05070b">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>RJ Game India</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#020407;
+  font-family:Arial,sans-serif;
+}
+
+.screen{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#020407;
+}
+
+/* Virat Kohli loading image */
+.hero{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  animation:cinematicZoom 8s ease-in-out infinite alternate;
+}
+
+/* Dark cinematic overlay */
+.overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.20),
+      rgba(0,0,0,.08) 45%,
+      rgba(0,0,0,.72)
+    );
+}
+
+/* Stadium light animation */
+.light{
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(255,255,255,.45),
+    rgba(255,255,255,.05) 35%,
+    transparent 70%
+  );
+  animation:lightMove 4s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+
+.light.one{
+  top:-50px;
+  left:-50px;
+}
+
+.light.two{
+  top:-60px;
+  right:-50px;
+  animation-delay:1s;
+}
+
+.light.three{
+  bottom:-80px;
+  left:25%;
+  animation-delay:2s;
+}
+
+/* Main content */
+.content{
+  position:relative;
+  z-index:5;
+  width:min(92vw,900px);
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  padding:25px 15px 28px;
+  text-align:center;
+}
+
+/* Loading text */
+.loading-title{
+  color:white;
+  font-size:clamp(18px,4vw,32px);
+  font-weight:bold;
+  letter-spacing:2px;
+  margin-bottom:10px;
+  text-shadow:0 3px 15px #000;
+}
+
+.percent{
+  color:white;
+  font-size:clamp(20px,4vw,30px);
+  font-weight:bold;
+  margin-bottom:8px;
+  text-shadow:0 2px 10px #000;
+}
+
+/* Loading bar */
+.loading-bar{
+  width:min(80vw,650px);
+  height:16px;
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:20px;
+  background:rgba(0,0,0,.45);
+  overflow:hidden;
+  box-shadow:0 0 20px rgba(0,180,255,.35);
+}
+
+.progress{
+  width:0%;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(
+    90deg,
+    #00bfff,
+    #27e6ff,
+    #ffffff
+  );
+  box-shadow:
+    0 0 12px #00cfff,
+    0 0 25px rgba(0,200,255,.8);
+  transition:width .08s linear;
+}
+
+/* Feature buttons */
+.features{
+  margin-top:18px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
+
+.feature{
+  color:white;
+  padding:10px 16px;
+  min-width:130px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:30px;
+  background:rgba(0,0,0,.38);
+  backdrop-filter:blur(6px);
+  font-size:13px;
+  font-weight:bold;
+  letter-spacing:.5px;
+  box-shadow:0 4px 18px rgba(0,0,0,.3);
+  animation:buttonFloat 3s ease-in-out infinite;
+}
+
+.feature:nth-child(2){animation-delay:.2s}
+.feature:nth-child(3){animation-delay:.4s}
+.feature:nth-child(4){animation-delay:.6s}
+.feature:nth-child(5){animation-delay:.8s}
+.feature:nth-child(6){animation-delay:1s}
+
+.version{
+  color:rgba(255,255,255,.8);
+  margin-top:15px;
+  font-size:13px;
+}
+
+.ready{
+  display:none;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  margin-top:10px;
+  text-shadow:0 0 15px #00cfff;
+}
+
+/* Animations */
+@keyframes cinematicZoom{
+  from{
+    transform:scale(1);
+  }
+  to{
+    transform:scale(1.07);
+  }
+}
+
+@keyframes lightMove{
+  from{
+    transform:translate(0,0) scale(.9);
+    opacity:.35;
+  }
+  to{
+    transform:translate(35px,25px) scale(1.2);
+    opacity:.75;
+  }
+}
+
+@keyframes buttonFloat{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-3px);
+  }
+}
+
+/* Mobile */
+@media(max-width:600px){
+  .content{
+    padding-bottom:24px;
+  }
+
+  .loading-bar{
+    height:14px;
+  }
+
+  .features{
+    gap:7px;
+    margin-top:12px;
+  }
+
+  .feature{
+    min-width:105px;
+    padding:8px 10px;
+    font-size:11px;
+  }
+
+  .version{
+    font-size:11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+
+  <!-- आपकी Virat Kohli image -->
+  <img
+    class="hero"
+    src="./virat-kohli.png"
+    alt="RJ Game India Virat Kohli Loading Screen"
+  >
+
+  <div class="overlay"></div>
+
+  <!-- Animated stadium lights -->
+  <div class="light one"></div>
+  <div class="light two"></div>
+  <div class="light three"></div>
+
+  <div class="content">
+
+    <div class="loading-title" id="loadingTitle">
+      LOADING RJ GAME INDIA...
+    </div>
+
+    <div class="percent" id="percent">
+      0%
+    </div>
+
+    <div class="loading-bar">
+      <div
+        class="progress"
+        id="progress">
+      </div>
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+        PLAYING XI
+      </div>
+
+      <div class="feature">
+        IPL AUCTION
+      </div>
+
+      <div class="feature">
+        CAREER MODE
+      </div>
+
+      <div class="feature">
+        REPLAY
+      </div>
+
+      <div class="feature">
+        MULTI CAMERA
+      </div>
+
+      <div class="feature">
+        WEATHER
+      </div>
+
+    </div>
+
+    <div class="version">
+      RJ GAME INDIA • VERSION 1.0.0 • ❤️
+    </div>
+
+    <div
+      class="ready"
+      id="ready">
+      RJ GAME INDIA READY!
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+let number = 0;
+
+const progress =
+  document.getElementById("progress");
+
+const percent =
+  document.getElementById("percent");
+
+const title =
+  document.getElementById("loadingTitle");
+
+const ready =
+  document.getElementById("ready");
+
+const timer =
+  setInterval(function(){
+
+    number++;
+
+    progress.style.width =
+      number + "%";
+
+    percent.textContent =
+      number + "%";
+
+    if(number >= 100){
+
+      clearInterval(timer);
+
+      title.textContent =
+        "RJ GAME INDIA READY!";
+
+      ready.style.display =
+        "block";
+
+      setTimeout(function(){
+
+        title.textContent =
+          "TAP TO START";
+
+      },1200);
+
+    }
+
+  },40);
+
+</script>
+
+</body>
+  </html>
