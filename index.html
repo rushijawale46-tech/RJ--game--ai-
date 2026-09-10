@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05070b">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>RJ Game India</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#020509;
+  font-family:Arial,sans-serif;
+}
+
+.screen{
+  width:100vw;
+  height:100vh;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  background:
+    radial-gradient(circle at 50% 40%,#16476c 0%,#081827 45%,#020407 100%);
+}
+
+.screen:before,
+.screen:after{
+  content:"";
+  position:absolute;
+  width:30vw;
+  height:30vw;
+  border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(255,255,255,.5),
+    rgba(255,255,255,.08) 35%,
+    transparent 70%);
+  top:3%;
+}
+
+.screen:before{left:-10%}
+.screen:after{right:-10%}
+
+.ground{
+  position:absolute;
+  left:-10%;
+  bottom:-45%;
+  width:120%;
+  height:70%;
+  border-radius:50% 50% 0 0;
+  background:
+    radial-gradient(ellipse,#2d7937 0%,#123519 55%,#020604 90%);
+}
+
+.content{
+  position:relative;
+  z-index:5;
+  width:94%;
+  max-width:1200px;
+  text-align:center;
+}
+
+.logo{
+  font-size:clamp(36px,7vw,88px);
+  font-weight:900;
+  letter-spacing:6px;
+  text-shadow:0 5px 25px #000;
+}
+
+.india{
+  margin-top:-5px;
+  font-size:.62em;
+  background:linear-gradient(90deg,#ff9933,#fff,#138808);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.subtitle{
+  margin-top:5px;
+  font-size:clamp(12px,2vw,23px);
+  letter-spacing:6px;
+  opacity:.85;
+}
+
+/* VIRAT IMAGE */
+.player{
+  width:clamp(150px,20vw,230px);
+  height:clamp(190px,34vh,300px);
+  margin:18px auto 8px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.virat-face{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 15px 25px rgba(0,0,0,.8));
+}
+
+/* Trophy */
+.trophy{
+  position:absolute;
+  right:-5px;
+  top:35px;
+  width:42px;
+  height:68px;
+  border-radius:5px 5px 18px 18px;
+  background:linear-gradient(90deg,#999,#fff,#aaa);
+  box-shadow:0 0 20px rgba(255,255,255,.35);
+}
+
+/* Moving cricket ball */
+.ball{
+  position:absolute;
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:#d7192f;
+  box-shadow:0 0 18px #f44;
+  animation:ballMove 2.5s infinite ease-in-out;
+}
+
+@keyframes ballMove{
+  0%{
+    left:5%;
+    top:62%;
+  }
+  50%{
+    left:90%;
+    top:35%;
+  }
+  100%{
+    left:5%;
+    top:62%;
+  }
+}
+
+/* Loading */
+.loading-title{
+  font-size:clamp(15px,2.4vw,25px);
+  letter-spacing:2px;
+  margin-top:5px;
+}
+
+.loading-bar{
+  width:min(80vw,850px);
+  height:16px;
+  margin:12px auto 5px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#111b25;
+  border:1px solid #4286bd;
+  box-shadow:0 0 15px rgba(30,140,255,.35);
+}
+
+.progress{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,#078cff,#52d5ff);
+  transition:width .04s linear;
+}
+
+.percent{
+  font-size:18px;
+  font-weight:bold;
+  margin-top:3px;
+}
+
+.features{
+  margin-top:15px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.feature{
+  padding:7px 14px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:20px;
+  background:rgba(0,0,0,.35);
+  font-size:12px;
+}
+
+.version{
+  margin-top:11px;
+  font-size:13px;
+  opacity:.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+
+  <div class="ground"></div>
+
+  <div class="ball"></div>
+
+  <div class="content">
+
+    <div class="logo">
+      RJ GAME
+      <div class="india">INDIA</div>
+    </div>
+
+    <div class="subtitle">
+      CRICKET • 3D • INDIA
+    </div>
+
+    <div class="player">
+      <img
+        src="./virat.png"
+        class="virat-face"
+        alt="Virat Kohli"
+      >
+      <div class="trophy"></div>
+    </div>
+
+    <div class="loading-title" id="loadingTitle">
+      LOADING RJ GAME INDIA...
+    </div>
+
+    <div class="loading-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="percent" id="percent">
+      0%
+    </div>
+
+    <div class="features">
+      <div class="feature">PLAYING XI</div>
+      <div class="feature">IPL AUCTION</div>
+      <div class="feature">CAREER MODE</div>
+      <div class="feature">REPLAY</div>
+      <div class="feature">MULTI CAMERA</div>
+      <div class="feature">WEATHER</div>
+    </div>
+
+    <div class="version">
+      Version 1.0.0 • Made for Cricket Fans ❤️
+    </div>
+
+  </div>
+</div>
+
+<script>
+let number = 0;
+
+const progress =
+  document.getElementById("progress");
+
+const percent =
+  document.getElementById("percent");
+
+const title =
+  document.getElementById("loadingTitle");
+
+const timer = setInterval(function(){
+
+  number++;
+
+  progress.style.width = number + "%";
+
+  percent.textContent = number + "%";
+
+  if(number >= 100){
+
+    clearInterval(timer);
+
+    title.textContent =
+      "RJ GAME INDIA READY!";
+
+    setTimeout(function(){
+
+      title.textContent =
+        "TAP TO START";
+
+    },1200);
+  }
+
+},40);
+</script>
+
+</body>
+</html>
