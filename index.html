@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05070b">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>RJ Game India</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#05070b;
+  font-family:Arial,sans-serif;
+}
+
+.loading-screen{
+  width:100vw;
+  height:100vh;
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  color:white;
+  background:
+    radial-gradient(circle at 50% 45%,#244d70 0%,#0b1b2b 42%,#020407 100%);
+}
+
+/* Stadium lights */
+.loading-screen:before,
+.loading-screen:after{
+  content:"";
+  position:absolute;
+  top:5%;
+  width:25vw;
+  height:25vw;
+  border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(255,255,255,.65),
+    rgba(255,255,255,.08) 35%,
+    transparent 70%);
+}
+
+.loading-screen:
