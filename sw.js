@@ -1,4 +1,4 @@
-const CACHE = "rj-game-india-v1.1.0";
+const CACHE = "rj-game-india-v1.1.1";
 
 self.addEventListener("install", event => {
   self.skipWaiting();
